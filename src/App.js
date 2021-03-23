@@ -1,5 +1,5 @@
-import React from 'react';
-import { GoogleMap, LoadScript, Marker } from '@react-google-maps/api';
+import React, {useState} from 'react';
+import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const MapContainer = () => {
 
@@ -41,12 +41,20 @@ const MapContainer = () => {
         }
     ];
 
+    const [ selected, setSelected ] = useState({});
+
+    const onSelect = item => {
+        setSelected(item);
+        console.log(item.name)
+    }
+
     const mapStyles = {
         height: "100vh",
-        width: "100%"};
+        width: "100%"
+    };
 
     const defaultCenter = {
-        lat: 51.00, lng: 0.0005
+        lat: 51.4105, lng: 0.8339
     }
 
     return (
@@ -59,9 +67,25 @@ const MapContainer = () => {
                 {
                     locations.map(item => {
                         return (
-                            <Marker key={item.name} position={item.location}/>
+                            <Marker
+                                key={item.name}
+                                position={item.location}
+                                onClick={() => onSelect(item)}
+                            />
                         )
                     })
+                }
+                {
+                    selected.location &&
+                    (
+                        <InfoWindow
+                            position={selected.location}
+                            clickable={true}
+                            onCloseClick={() => setSelected({})}
+                        >
+                            <p>{selected.name}</p>
+                        </InfoWindow>
+                    )
                 }
             </GoogleMap>
         </LoadScript>
@@ -69,63 +93,3 @@ const MapContainer = () => {
 }
 
 export default MapContainer;
-
-
-
-
-
-
-// import React, { useState } from 'react'
-// import { GoogleMap, useJsApiLoader, Marker } from '@react-google-maps/api';
-//
-// const containerStyle = {
-//     width: '1600px',
-//     height: '800px'
-// };
-//
-// const center = {
-//     lat: 51.4769,
-//     lng: 0.0005
-// };
-//
-// function MyComponent(props) {
-//
-//     const [issLocation, setIssLocation] = useState(
-//         {
-//             issLocation: {
-//                 issLatitude: 0,
-//                 issLongitude: 0
-//             }
-//         })
-//
-//     const { isLoaded } = useJsApiLoader({
-//         id: 'google-map-script',
-//         googleMapsApiKey: 'AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk'
-//     })
-//
-//     const [map, setMap] = React.useState(null)
-//
-//     const onLoad = React.useCallback(function callback(map) {
-//         const bounds = new window.google.maps.LatLngBounds();
-//         map.fitBounds(bounds);
-//         setMap(map)
-//     }, [])
-//
-//     const onUnmount = React.useCallback(function callback(map) {
-//         setMap(null)
-//     }, [])
-//
-//     return isLoaded ? (
-//         <GoogleMap
-//             mapContainerStyle={containerStyle}
-//             center={center}
-//             zoom={2}
-//             onLoad={onLoad}
-//             onUnmount={onUnmount}
-//         >
-//             {props.isMarkerShown && <Marker position={{ lat: -34.397, lng: 150.644 }} />}
-//         </GoogleMap>
-//     ) : <></>
-// }
-//
-// export default React.memo(MyComponent)
