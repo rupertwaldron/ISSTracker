@@ -67,7 +67,7 @@ const MapContainer = () => {
     };
 
     const addMarker = location => {
-        setMarkers([ location, ...markers ]);
+        setMarkers([ {name: "new", location: location} , ...markers ]);
         console.log(markers);
     }
 
