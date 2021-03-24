@@ -67,13 +67,28 @@ const MapContainer = () => {
     };
 
     const addMarker = location => {
-        setMarkers([ {name: "new", location: location} , ...markers ]);
+        setMarkers([ {
+            name: "new",
+            lat: location.lat + 10.0,
+            lng: location.lng - 10.0,
+            draggable: true
+        } , ...markers ]);
         console.log(markers);
     }
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(success);
     })
+
+    const onDrag = loc => {
+        setSelected({
+            ...selected,
+            lat: 0.0,
+            long: 0.0,
+            name: "updated RR"
+        });
+        console.log(selected.location);
+    }
 
     return (
         <LoadScript
@@ -97,6 +112,8 @@ const MapContainer = () => {
                             <Marker
                                 key={index}
                                 position={item.location}
+                                draggable={true}
+                                onDragEnd={loc => onDrag(loc)}
                                 onClick={() => onSelect(item)}
                             />
                         )
