@@ -92,10 +92,10 @@ const MapContainer = () => {
                     })
                 }
                 {
-                    markers.map(item => {
+                    markers.map((item, index) => {
                         return (
                             <Marker
-                                key={item.name}
+                                key={index}
                                 position={item.location}
                                 onClick={() => onSelect(item)}
                             />
