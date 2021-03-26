@@ -78,6 +78,18 @@ const MapContainer = () => {
         console.log(markers);
     }
 
+    const addMarker2 = location => {
+        const newMarker = {
+            name: "New",
+            location: {
+                lat: location.lat,
+                lng: location.lng
+            }
+        }
+        setMarkers(bob => [...bob, newMarker]);
+        console.log(markers);
+    }
+
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(success);
     })
@@ -88,7 +100,9 @@ const MapContainer = () => {
             <GoogleMap
                 mapContainerStyle={mapStyles}
                 zoom={5}
-                center={currentPosition}>
+                center={currentPosition}
+                onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
+            >
                 {
                     currentPosition.lat && (
                             <Marker
