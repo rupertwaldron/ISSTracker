@@ -55,6 +55,7 @@ const MapContainer = () => {
     }
 
     const [ currentPosition, setCurrentPosition ] = useState({lat: 0.0, lng: 0.0});
+    const [ homePosition, setHomePosition ] = useState({lat: 0.0, lng: 0.0});
 
     const [ markers, setMarkers ] = useState([...locations]);
 
@@ -64,6 +65,11 @@ const MapContainer = () => {
     };
 
     const success = position => {
+        setHomePosition({
+            ...homePosition,
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+        });
         setCurrentPosition({
             ...currentPosition,
             lat: position.coords.latitude,
@@ -86,6 +92,11 @@ const MapContainer = () => {
     const addMarker2 = location => {
         const url = LOCATION_BASE_URL + `?access_key=${API_KEY_LOCATION}&query=${location.lat},${location.lng}`;
         setLoading(true);
+        setCurrentPosition({
+            ...currentPosition,
+            lat: location.lat,
+            lng: location.lng
+        });
         setMarkers( () => {
             fetch(url)
                 .then(res => {
@@ -140,10 +151,10 @@ const MapContainer = () => {
                     onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
                 >
                     {
-                        currentPosition.lat && (
+                        homePosition.lat && (
                                 <Marker
-                                    position={currentPosition}
-                                    onClick={() => addMarker(currentPosition)}
+                                    position={homePosition}
+                                    // onClick={() => addMarker(currentPosition)}
                                 />
                             )
                         })
