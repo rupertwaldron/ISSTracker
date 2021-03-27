@@ -94,6 +94,12 @@ const MapContainer = () => {
         navigator.geolocation.getCurrentPosition(success);
     })
 
+    const deleteItem = index => {
+        const markerArray = [...markers];
+        markerArray.splice(index, 1);
+        setMarkers([...markerArray]);
+    }
+
     return (
         <LoadScript
             googleMapsApiKey='AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk'>
@@ -120,6 +126,7 @@ const MapContainer = () => {
                                 position={item.location}
                                 draggable={true}
                                 onClick={() => onSelect(item)}
+                                onRightClick={() => deleteItem(index)}
                             />
                         )
                     })
