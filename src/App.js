@@ -2,7 +2,8 @@ import React, {useEffect, useState} from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 
 const MapContainer = () => {
-
+    const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
+    const LOCATION_BASE_URL = 'http://api.positionstack.com/v1/reverse';
 
     const locations = [
         {
@@ -42,7 +43,11 @@ const MapContainer = () => {
         }
     ];
 
+    const [ httpStatus, setHttpStatus ] = useState(200);
+
     const [ selected, setSelected ] = useState({});
+
+    const [ loading, setLoading ] = useState(false);
 
     const onSelect = item => {
         setSelected(item);
@@ -67,26 +72,46 @@ const MapContainer = () => {
     };
 
     const addMarker = location => {
-        const newMarker = {
+        const tempMarker = {
             name: "Rupert",
             location: {
                 lat: 50,
                 lng: 50
             }
         }
-        setMarkers(bob => [...bob, newMarker]);
+        setMarkers(bob => [...bob, tempMarker]);
         console.log(markers);
     }
 
     const addMarker2 = location => {
-        const newMarker = {
-            name: "New",
-            location: {
-                lat: location.lat,
-                lng: location.lng
-            }
-        }
-        setMarkers(bob => [...bob, newMarker]);
+        const url = LOCATION_BASE_URL + `?access_key=${API_KEY_LOCATION}&query=${location.lat},${location.lng}`;
+        setLoading(true);
+        setMarkers( () => {
+            fetch(url)
+                .then(res => {
+                    setHttpStatus(res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    if (httpStatus === 200) {
+                        const newMarker = {
+                            name: data.data[0].label,
+                            location: {
+                                lat: location.lat,
+                                lng: location.lng
+                            }
+                        }
+                        setMarkers([...markers, newMarker]);
+                        setLoading(false);
+                    } else {
+                        throw httpStatus;
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoading(false);
+                });
+        })
         console.log(markers);
     }
 
@@ -100,52 +125,58 @@ const MapContainer = () => {
         setMarkers([...markerArray]);
     }
 
-    return (
-        <LoadScript
-            googleMapsApiKey='AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk'>
-            <GoogleMap
-                mapContainerStyle={mapStyles}
-                zoom={5}
-                center={currentPosition}
-                onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
-            >
-                {
-                    currentPosition.lat && (
-                            <Marker
-                                position={currentPosition}
-                                onClick={() => addMarker(currentPosition)}
-                            />
+    if (loading) {
+        return (
+            <h1>Getting marker address...</h1>
+        )
+    } else {
+        return (
+            <LoadScript
+                googleMapsApiKey='AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk'>
+                <GoogleMap
+                    mapContainerStyle={mapStyles}
+                    zoom={5}
+                    center={currentPosition}
+                    onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
+                >
+                    {
+                        currentPosition.lat && (
+                                <Marker
+                                    position={currentPosition}
+                                    onClick={() => addMarker(currentPosition)}
+                                />
+                            )
+                        })
+                    }
+                    {
+                        markers.map((item, index) => {
+                            return (
+                                <Marker
+                                    key={index}
+                                    position={item.location}
+                                    draggable={true}
+                                    onClick={() => onSelect(item)}
+                                    onRightClick={() => deleteItem(index)}
+                                />
+                            )
+                        })
+                    }
+                    {
+                        selected.location &&
+                        (
+                            <InfoWindow
+                                position={selected.location}
+                                clickable={true}
+                                onCloseClick={() => setSelected({})}
+                            >
+                                <p>{selected.name}</p>
+                            </InfoWindow>
                         )
-                    })
-                }
-                {
-                    markers.map((item, index) => {
-                        return (
-                            <Marker
-                                key={index}
-                                position={item.location}
-                                draggable={true}
-                                onClick={() => onSelect(item)}
-                                onRightClick={() => deleteItem(index)}
-                            />
-                        )
-                    })
-                }
-                {
-                    selected.location &&
-                    (
-                        <InfoWindow
-                            position={selected.location}
-                            clickable={true}
-                            onCloseClick={() => setSelected({})}
-                        >
-                            <p>{selected.name}</p>
-                        </InfoWindow>
-                    )
-                }
-            </GoogleMap>
-        </LoadScript>
-    )
+                    }
+                </GoogleMap>
+            </LoadScript>
+        )
+    }
 }
 
 export default MapContainer;
