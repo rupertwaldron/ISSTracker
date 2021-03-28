@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import Card from './elements/Card/Card';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -78,7 +79,9 @@ const MapContainer = () => {
 
     const mapStyles = {
         height: "100vh",
-        width: "100%"
+        width: "90%",
+        display: "inline-block",
+        float: "left"
     };
 
     const onSelect = item => {
@@ -244,7 +247,11 @@ const MapContainer = () => {
                         )
                     }
                 </GoogleMap>
+                <Card>
+                    <p>Hello world!</p>
+                </Card>
             </LoadScript>
+
         )
     }
 }
