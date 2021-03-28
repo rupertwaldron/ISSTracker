@@ -235,9 +235,11 @@ const MapContainer = () => {
                                 clickable={true}
                                 onCloseClick={() => setSelected({})}
                             >
-                                <p>{selected.name}</p>
-                                <p>{selected.weather.desc}</p>
-                                <p>{selected.weather.temp}</p>
+                                <p>{`
+                                Name: ${selected.name} 
+                                | Weather: ${selected.weather.desc}
+                                | Temp: ${selected.weather.temp} ºC
+                                `}</p>
                             </InfoWindow>
                         )
                     }
