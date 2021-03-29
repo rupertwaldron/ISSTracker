@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import Card from './elements/Card/Card';
-import Markers from './elements/Markers/Markers';
-import InfoDisplay from './elements/Display/InfoDisplay';
-import Preview from './elements/Preview/Preview';
+import Markers from './components/Markers/Markers';
+import InfoDisplay from './components/Display/InfoDisplay';
+import Preview from './components/Preview/Preview';
+import WeatherDetails from './components/WeatherDetails/WeatherDetails';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -220,7 +221,12 @@ const MapContainer = () => {
                 }
             </GoogleMap>
             <Card>
-                <Preview />
+                {
+                    !loading && (
+                        <WeatherDetails
+                            selected={selected}
+                        />)
+                }
             </Card>
         </LoadScript>
     )
