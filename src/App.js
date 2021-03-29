@@ -1,6 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
 import Card from './elements/Card/Card';
+import Markers from './elements/Markers/Markers';
+import InfoDisplay from './elements/Display/InfoDisplay';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -131,18 +133,6 @@ const MapContainer = () => {
         });
     };
 
-    const addMarker = location => {
-        const tempMarker = {
-            name: "Rupert",
-            location: {
-                lat: 50,
-                lng: 50
-            }
-        }
-        setMarkers(bob => [...bob, tempMarker]);
-        console.log(markers);
-    }
-
     const addMarker2 = location => {
         const url = LOCATION_BASE_URL + `?access_key=${API_KEY_LOCATION}&query=${location.lat},${location.lng}`;
         setLoading(true);
@@ -194,42 +184,6 @@ const MapContainer = () => {
         setMarkers([...markerArray]);
     }
 
-
-    function displayMarkers() {
-        return <>
-            {
-                markers.map((item, index) => {
-                    return (
-                        <Marker
-                            key={index}
-                            position={item.location}
-                            draggable={true}
-                            onClick={() => onSelect(item)}
-                            onRightClick={() => deleteItem(index)}
-                        />
-                    )
-                })
-            }
-        </>;
-    }
-
-    function displayInfo() {
-        return selected.location &&
-            (
-                <InfoWindow
-                    position={selected.location}
-                    clickable={true}
-                    onCloseClick={() => setSelected({})}
-                >
-                    <p>{`
-                                Name: ${selected.name} 
-                                | Weather: ${selected.weather.desc}
-                                | Temp: ${selected.weather.temp} ºC
-                                `}</p>
-                </InfoWindow>
-            );
-    }
-
     return (
         <LoadScript
             googleMapsApiKey={GOOGLE_MAP_API}>
@@ -243,15 +197,25 @@ const MapContainer = () => {
                     homePosition.lat && (
                         <Marker
                             position={homePosition}
-                            // onClick={() => addMarker(currentPosition)}
                         />
                     )
                 })
                 {
-                    !loading && displayMarkers()
+                    !loading && (
+                        <Markers
+                            markers={markers}
+                            onClick={onSelect}
+                            onRightClick={deleteItem}
+                        />
+                    )
                 }
                 {
-                    !loading && displayInfo()
+                    !loading && (
+                        <InfoDisplay
+                            selected={selected}
+                            onCloseClick={setSelected}
+                        />
+                    )
                 }
             </GoogleMap>
             <Card>
