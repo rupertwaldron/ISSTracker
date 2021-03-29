@@ -194,66 +194,71 @@ const MapContainer = () => {
         setMarkers([...markerArray]);
     }
 
-    if (loading) {
-        return (
-            <h1>Getting marker info...</h1>
-        )
-    } else {
-        return (
-            <LoadScript
-                googleMapsApiKey={GOOGLE_MAP_API}>
-                <GoogleMap
-                    mapContainerStyle={mapStyles}
-                    zoom={5}
-                    center={currentPosition}
-                    onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
+
+    function displayMarkers() {
+        return <>
+            {
+                markers.map((item, index) => {
+                    return (
+                        <Marker
+                            key={index}
+                            position={item.location}
+                            draggable={true}
+                            onClick={() => onSelect(item)}
+                            onRightClick={() => deleteItem(index)}
+                        />
+                    )
+                })
+            }
+        </>;
+    }
+
+    function displayInfo() {
+        return selected.location &&
+            (
+                <InfoWindow
+                    position={selected.location}
+                    clickable={true}
+                    onCloseClick={() => setSelected({})}
                 >
-                    {
-                        homePosition.lat && (
-                                <Marker
-                                    position={homePosition}
-                                    // onClick={() => addMarker(currentPosition)}
-                                />
-                            )
-                        })
-                    }
-                    {
-                        markers.map((item, index) => {
-                            return (
-                                <Marker
-                                    key={index}
-                                    position={item.location}
-                                    draggable={true}
-                                    onClick={() => onSelect(item)}
-                                    onRightClick={() => deleteItem(index)}
-                                />
-                            )
-                        })
-                    }
-                    {
-                        selected.location &&
-                        (
-                            <InfoWindow
-                                position={selected.location}
-                                clickable={true}
-                                onCloseClick={() => setSelected({})}
-                            >
-                                <p>{`
+                    <p>{`
                                 Name: ${selected.name} 
                                 | Weather: ${selected.weather.desc}
                                 | Temp: ${selected.weather.temp} ºC
                                 `}</p>
-                            </InfoWindow>
-                        )
-                    }
-                </GoogleMap>
-                <Card>
-                    <p>Hello world!</p>
-                </Card>
-            </LoadScript>
-
-        )
+                </InfoWindow>
+            );
     }
+
+    return (
+        <LoadScript
+            googleMapsApiKey={GOOGLE_MAP_API}>
+            <GoogleMap
+                mapContainerStyle={mapStyles}
+                zoom={5}
+                center={currentPosition}
+                onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
+            >
+                {
+                    homePosition.lat && (
+                        <Marker
+                            position={homePosition}
+                            // onClick={() => addMarker(currentPosition)}
+                        />
+                    )
+                })
+                {
+                    !loading && displayMarkers()
+                }
+                {
+                    !loading && displayInfo()
+                }
+            </GoogleMap>
+            <Card>
+                <p>Hello world!</p>
+            </Card>
+        </LoadScript>
+    )
 }
 
 export default MapContainer;
