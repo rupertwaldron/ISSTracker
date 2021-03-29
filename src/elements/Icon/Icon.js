@@ -6,10 +6,13 @@ import classes from './Icon.module.css';
 
 const icon = (props) => {
     return(
+        <>
         <img 
             src={require(`./../../assets/images/${props.type}.svg`).default}
             alt={props.type}
             className={classes.Icon} />
+            <span>hello</span>
+        </>
     );
 }
 

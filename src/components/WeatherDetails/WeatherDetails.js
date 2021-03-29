@@ -9,17 +9,17 @@ import Date from './Date/Date';
 const weatherDetails = (props) => {
     return <>
     {
-        props.selected.location && (
-            <div className={classes.WeatherDetailsWrapper}>
+        props.selected.location && ( <>
                 <div className={classes.WeatherIconWrapper}>
                     <Icon type={props.selected.weather.desc}/>
+                    <Temperature degrees={props.selected.weather.temp}/>
                 </div>
                 <div className={classes.WeatherDataWrapper}>
                     <Temperature degrees={props.selected.weather.temp}/>
                     <Description type={props.selected.name}/>
                     <Date/>
                 </div>
-            </div>
+            </>
         )
     }
     </>

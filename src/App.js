@@ -222,10 +222,11 @@ const MapContainer = () => {
             </GoogleMap>
             <Card>
                 {
-                    !loading && (
-                        <WeatherDetails
-                            selected={selected}
-                        />)
+                    // !loading && (
+                    //     <WeatherDetails
+                    //         selected={selected}
+                    //     />)
+                    <Preview />
                 }
             </Card>
         </LoadScript>
