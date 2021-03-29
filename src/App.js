@@ -3,6 +3,7 @@ import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/ap
 import Card from './elements/Card/Card';
 import Markers from './elements/Markers/Markers';
 import InfoDisplay from './elements/Display/InfoDisplay';
+import Preview from './elements/Preview/Preview';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -219,7 +220,7 @@ const MapContainer = () => {
                 }
             </GoogleMap>
             <Card>
-                <p>Hello world!</p>
+                <Preview />
             </Card>
         </LoadScript>
     )
