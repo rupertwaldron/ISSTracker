@@ -5,6 +5,7 @@ import Markers from './components/Markers/Markers';
 import InfoDisplay from './components/Display/InfoDisplay';
 import Preview from './components/Preview/Preview';
 import WeatherDetails from './components/WeatherDetails/WeatherDetails';
+import MarkerInfo from './components/MarkerInfo/MarkerInfo';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -91,7 +92,7 @@ const MapContainer = () => {
     const onSelect = item => {
         const API_KEY = 'b3c1945cea140e1598a3fc529c90b7f1';
         const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
-        const url = API_URL + `?lat=${item.location.lat}&lon=${item.location.lat}&appid=${API_KEY}&units=metric`;
+        const url = API_URL + `?lat=${item.location.lat}&lon=${item.location.lng}&appid=${API_KEY}&units=metric`;
         setLoading(true);
         setSelected(() => {
             fetch(url)
@@ -222,11 +223,11 @@ const MapContainer = () => {
             </GoogleMap>
             <Card>
                 {
-                    // !loading && (
-                    //     <WeatherDetails
-                    //         selected={selected}
-                    //     />)
-                    <Preview />
+                    !loading && (
+                        <MarkerInfo
+                            selected={selected}
+                        />)
+                    // <Preview />
                 }
             </Card>
         </LoadScript>

@@ -1,0 +1,27 @@
+.Preview {
+    display: inline-block;
+    width: 40%;
+    max-width: 250px;
+    margin: auto;
+}
+
+.TempWrapper {
+    display: inline-block;
+    width: 50%;
+    max-width: 250px;
+    margin-top: 10%;
+    text-align: center;
+    vertical-align: top;
+}
+
+span {
+    vertical-align: baseline;
+    margin-bottom: auto;
+    color: green;
+}
+
+@media only screen and (min-width:600px) {
+    .Preview {
+        max-width: 200px;
+    }
+}
