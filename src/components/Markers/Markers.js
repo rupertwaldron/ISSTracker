@@ -11,7 +11,7 @@ const Markers = (props) => {
                         key={index}
                         position={item.location}
                         draggable={true}
-                        onClick={() => props.onClick(item)}
+                        onClick={() => props.onClick(item, index)}
                         onRightClick={() => props.onRightClick(index)}
                     />
                 )
