@@ -135,18 +135,6 @@ const MapContainer = () => {
             lat: position.coords.latitude,
             lng: position.coords.longitude
         });
-        const newHome = {
-            name: "Home",
-            location: {
-                lat: homePosition.lat,
-                lng: homePosition.lng
-            },
-            weather: {
-                desc: "Preview",
-                temp: "0"
-            }
-        }
-        setMarkers([...markers, newHome]);
     };
 
     const addMarker2 = location => {
@@ -231,14 +219,14 @@ const MapContainer = () => {
                         />
                     )
                 }
-                {
-                    !loading && (
-                        <InfoDisplay
-                            selected={selected}
-                            onCloseClick={setSelected}
-                        />
-                    )
-                }
+                {/*{*/}
+                {/*    !loading && (*/}
+                {/*        <InfoDisplay*/}
+                {/*            selected={selected}*/}
+                {/*            onCloseClick={setSelected}*/}
+                {/*        />*/}
+                {/*    )*/}
+                {/*}*/}
             </GoogleMap>
             {
                 !loading && markers.map((item, index) => {
