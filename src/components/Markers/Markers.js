@@ -1,4 +1,6 @@
-import {Marker} from "@react-google-maps/api";
+import {LoadScript, Marker} from "@react-google-maps/api";
+import Card from "../../elements/Card/Card";
+import MarkerInfo from "../MarkerInfo/MarkerInfo";
 
 const Markers = (props) => {
     return <>

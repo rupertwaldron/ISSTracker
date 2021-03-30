@@ -20,8 +20,8 @@ const MapContainer = () => {
                 lng: 2.162
             },
             weather: {
-                desc: "NA",
-                temp: "NA"
+                desc: "Preview",
+                temp: "1"
             }
         },
         {
@@ -31,8 +31,8 @@ const MapContainer = () => {
                 lng: 2.1649
             },
             weather: {
-                desc: "NA",
-                temp: "NA"
+                desc: "Preview",
+                temp: "2"
             }
         },
         {
@@ -42,8 +42,8 @@ const MapContainer = () => {
                 lng: 2.1585
             },
             weather: {
-                desc: "NA",
-                temp: "NA"
+                desc: "Preview",
+                temp: "3"
             }
         },
         {
@@ -53,8 +53,8 @@ const MapContainer = () => {
                 lng: 2.1682
             },
             weather: {
-                desc: "NA",
-                temp: "NA"
+                desc: "Preview",
+                temp: "4"
             }
         },
         {
@@ -64,8 +64,8 @@ const MapContainer = () => {
                 lng: 2.1915
             },
             weather: {
-                desc: "NA",
-                temp: "NA"
+                desc: "Preview",
+                temp: "5"
             }
         }
     ];
@@ -159,8 +159,8 @@ const MapContainer = () => {
                                 lng: location.lng
                             },
                             weather: {
-                                desc: "NA",
-                                temp: "NA"
+                                desc: "Preview",
+                                temp: "0"
                             }
                         }
                         setMarkers([...markers, newMarker]);
@@ -221,15 +221,20 @@ const MapContainer = () => {
                     )
                 }
             </GoogleMap>
-            <Card>
-                {
-                    !loading && (
-                        <MarkerInfo
-                            selected={selected}
-                        />)
-                    // <Preview />
-                }
-            </Card>
+            {
+                !loading && markers.map((item, index) => {
+                        return (
+                            <Card>
+                                <MarkerInfo
+                                    key={index}
+                                    selected={item}
+                                />
+                            </Card>
+                        )
+                    }
+                )
+            }
+
         </LoadScript>
     )
 }
