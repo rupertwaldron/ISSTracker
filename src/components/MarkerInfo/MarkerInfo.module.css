@@ -2,7 +2,7 @@
     display: inline-block;
     width: 40%;
     max-width: 250px;
-    margin: auto;
+    margin: 5px 5px 5px 5px;
 }
 
 .TempWrapper {
@@ -12,6 +12,10 @@
     margin-top: 10%;
     text-align: center;
     vertical-align: top;
+}
+
+.NameWrapper {
+    margin: 5px 5px 5px 5px;
 }
 
 span {

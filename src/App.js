@@ -194,6 +194,7 @@ const MapContainer = () => {
     const updateMarker = (markerToUpdate, index) => {
         const markerArray = [...markers];
         markerArray.splice(index, 1, markerToUpdate);
+        setMarkers([...markerArray]);
     }
 
     return (
@@ -234,7 +235,7 @@ const MapContainer = () => {
                 !loading && markers.map((item, index) => {
                         return (
                             <Card
-                            color={selectedIndex == index ? 'green' : 'yellow'}
+                            color={selectedIndex == index ? 'white' : 'gainsboro'}
                             >
                                 <MarkerInfo
                                     key={index}

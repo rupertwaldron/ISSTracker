@@ -15,7 +15,7 @@ const markerInfo = (props) => {
                     <div className={classes.TempWrapper}>
                         {props.selected.weather.temp} ºC
                     </div>
-                    <div>
+                    <div className={classes.NameWrapper}>
                         {props.selected.name}
                     </div>
 
