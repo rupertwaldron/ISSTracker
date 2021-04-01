@@ -70,6 +70,8 @@ const MapContainer = () => {
     //     }
     // ];
 
+    const [ selectedIndex, setSelectedIndex ] = useState(0);
+
     const [ httpStatus, setHttpStatus ] = useState(200);
 
     const [ selected, setSelected ] = useState({});
@@ -94,6 +96,7 @@ const MapContainer = () => {
         const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
         const url = API_URL + `?lat=${item.location.lat}&lon=${item.location.lng}&appid=${API_KEY}&units=metric`;
         setLoading(true);
+        setSelectedIndex(index);
         setSelected(() => {
             fetch(url)
                 .then(res => {
@@ -190,8 +193,7 @@ const MapContainer = () => {
 
     const updateMarker = (markerToUpdate, index) => {
         const markerArray = [...markers];
-        markerArray.splice(index, 1);
-        setMarkers([...markerArray, markerToUpdate]);
+        markerArray.splice(index, 1, markerToUpdate);
     }
 
     return (
@@ -231,7 +233,9 @@ const MapContainer = () => {
             {
                 !loading && markers.map((item, index) => {
                         return (
-                            <Card>
+                            <Card
+                            color={selectedIndex == index ? 'green' : 'yellow'}
+                            >
                                 <MarkerInfo
                                     key={index}
                                     selected={item}

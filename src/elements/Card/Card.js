@@ -4,7 +4,7 @@ import classes from './Card.module.css';
 
 const card = (props) => {
     return(
-        <div className={classes.Card}>
+        <div style={{backgroundColor: props.color}} className={classes.Card}>
             {props.children}
         </div>
     );
