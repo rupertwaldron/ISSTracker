@@ -91,8 +91,11 @@ const MapContainer = () => {
         float: "left"
     };
 
+
+
     const updateIssLocation = () => {
         const ISS_URL = 'https://api.wheretheiss.at/v1/satellites/25544';
+        setLoading(true);
         setIssLocation(() => {
             fetch(ISS_URL)
                 .then(res => {
@@ -101,20 +104,29 @@ const MapContainer = () => {
                 })
                 .then(data => {
                     if (httpStatus === 200) {
-                        setIssLocation({
-                            ...issLocation,
+                        // setIssLocation({
+                        //     ...issLocation,
+                        //     lat: data.latitude,
+                        //     lng: data.longitude
+                        // })
+                        const newlocation = {
                             lat: data.latitude,
                             lng: data.longitude
-                        })
+                        }
+                        setIssLocation(newlocation);
+                        setLoading(false);
                     } else {
                         throw httpStatus;
                     }
                 })
                 .catch(err => {
+                    setLoading(false);
                     console.log(err);
                 });
         })
     }
+
+    // const timer = setInterval(updateIssLocation, 20000);
 
     const onSelect = (item, index) => {
         const API_KEY = 'b3c1945cea140e1598a3fc529c90b7f1';
@@ -250,10 +262,12 @@ const MapContainer = () => {
                     )
                 }
                 {
+                    !loading && (
                         <Marker
                             position={issLocation}
                             icon={orange_dot}
                         />
+                    )
 
                 }
                 {/*{*/}
