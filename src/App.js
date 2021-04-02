@@ -2,7 +2,6 @@ import React, {useEffect, useState} from 'react';
 import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
-import Preview from './components/Preview/Preview';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
 
 const MapContainer = () => {

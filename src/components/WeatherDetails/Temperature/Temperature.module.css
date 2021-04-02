@@ -1,9 +1,0 @@
-.TemperatureWrapper {
-    display: inline-block;
-    color: #333333;
-    font-size: 1rem;
-    margin: .5rem 0;
-}
-.TemperatureWrapper .TemperatureSymbol {
-    font-size: 1rem;
-}
