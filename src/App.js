@@ -92,7 +92,6 @@ const MapContainer = () => {
     };
 
 
-
     const updateIssLocation = () => {
         const ISS_URL = 'https://api.wheretheiss.at/v1/satellites/25544';
         setLoading(true);
@@ -124,9 +123,15 @@ const MapContainer = () => {
                     console.log(err);
                 });
         })
+        console.log(issLocation);
     }
 
-    // const timer = setInterval(updateIssLocation, 20000);
+    useEffect(() => {
+        const interval = setInterval(() => {
+            updateIssLocation();
+        }, 10000);
+        return () => clearInterval(interval);
+    })
 
     const onSelect = (item, index) => {
         const API_KEY = 'b3c1945cea140e1598a3fc529c90b7f1';
@@ -244,7 +249,7 @@ const MapContainer = () => {
                 onDblClick={(event) => addMarker2({lat: event.latLng.lat(), lng: event.latLng.lng()})}
             >
                 {
-                    homePosition.lat && (
+                    homePosition.lat && !loading && (
                         <Marker
                             position={homePosition}
                             onClick={updateIssLocation}
@@ -283,7 +288,8 @@ const MapContainer = () => {
                 !loading && markers.map((item, index) => {
                         return (
                             <Card
-                            color={selectedIndex === index ? 'LightYellow' : 'gainsboro'}
+                                key={index}
+                                color={selectedIndex === index ? 'LightYellow' : 'gainsboro'}
                             >
                                 <MarkerInfo
                                     key={index}
