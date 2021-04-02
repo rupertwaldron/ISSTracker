@@ -1,10 +1,8 @@
 import React, {useEffect, useState} from 'react';
-import { GoogleMap, LoadScript, Marker, InfoWindow } from '@react-google-maps/api';
+import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
-import InfoDisplay from './components/Display/InfoDisplay';
 import Preview from './components/Preview/Preview';
-import WeatherDetails from './components/WeatherDetails/WeatherDetails';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
 
 const MapContainer = () => {
@@ -216,6 +214,7 @@ const MapContainer = () => {
                 {
                     !loading && (
                         <Markers
+                            selectedIndex={selectedIndex}
                             markers={markers}
                             onClick={onSelect}
                             onRightClick={deleteItem}
@@ -235,7 +234,7 @@ const MapContainer = () => {
                 !loading && markers.map((item, index) => {
                         return (
                             <Card
-                            color={selectedIndex == index ? 'white' : 'gainsboro'}
+                            color={selectedIndex === index ? 'LightYellow' : 'gainsboro'}
                             >
                                 <MarkerInfo
                                     key={index}
