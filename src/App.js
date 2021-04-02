@@ -82,7 +82,7 @@ const MapContainer = () => {
 
     const [ markers, setMarkers ] = useState([]);
 
-    const [issLocation, setIssLocation] = useState({lat: 0.0, lng: 0.0})
+    const [ issLocation, setIssLocation ] = useState({lat: 0.0, lng: 0.0})
 
     const mapStyles = {
         height: "100vh",
@@ -93,8 +93,7 @@ const MapContainer = () => {
 
     const updateIssLocation = () => {
         const ISS_URL = 'https://api.wheretheiss.at/v1/satellites/25544';
-        setLoading(true);
-        setIssLocation(issLocation => {
+        setIssLocation(() => {
             fetch(ISS_URL)
                 .then(res => {
                     setHttpStatus(res.status);
@@ -102,19 +101,17 @@ const MapContainer = () => {
                 })
                 .then(data => {
                     if (httpStatus === 200) {
-                        setLoading(false);
-                        return {
+                        setIssLocation({
                             ...issLocation,
                             lat: data.latitude,
                             lng: data.longitude
-                        }
+                        })
                     } else {
                         throw httpStatus;
                     }
                 })
                 .catch(err => {
                     console.log(err);
-                    setLoading(false);
                 });
         })
     }
@@ -253,12 +250,11 @@ const MapContainer = () => {
                     )
                 }
                 {
-                    !loading && (
                         <Marker
                             position={issLocation}
                             icon={orange_dot}
                         />
-                    )
+
                 }
                 {/*{*/}
                 {/*    !loading && (*/}
