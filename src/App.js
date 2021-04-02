@@ -3,6 +3,7 @@ import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
+import orange_dot from './assets/images/markers/orange-dot.png';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -81,12 +82,42 @@ const MapContainer = () => {
 
     const [ markers, setMarkers ] = useState([]);
 
+    const [issLocation, setIssLocation] = useState({lat: 0.0, lng: 0.0})
+
     const mapStyles = {
         height: "100vh",
         width: "90%",
         display: "inline-block",
         float: "left"
     };
+
+    const updateIssLocation = () => {
+        const ISS_URL = 'https://api.wheretheiss.at/v1/satellites/25544';
+        setLoading(true);
+        setIssLocation(issLocation => {
+            fetch(ISS_URL)
+                .then(res => {
+                    setHttpStatus(res.status);
+                    return res.json();
+                })
+                .then(data => {
+                    if (httpStatus === 200) {
+                        setLoading(false);
+                        return {
+                            ...issLocation,
+                            lat: data.latitude,
+                            lng: data.longitude
+                        }
+                    } else {
+                        throw httpStatus;
+                    }
+                })
+                .catch(err => {
+                    console.log(err);
+                    setLoading(false);
+                });
+        })
+    }
 
     const onSelect = (item, index) => {
         const API_KEY = 'b3c1945cea140e1598a3fc529c90b7f1';
@@ -207,6 +238,7 @@ const MapContainer = () => {
                     homePosition.lat && (
                         <Marker
                             position={homePosition}
+                            onClick={updateIssLocation}
                         />
                     )
                 })
@@ -217,6 +249,14 @@ const MapContainer = () => {
                             markers={markers}
                             onClick={onSelect}
                             onRightClick={deleteItem}
+                        />
+                    )
+                }
+                {
+                    !loading && (
+                        <Marker
+                            position={issLocation}
+                            icon={orange_dot}
                         />
                     )
                 }
