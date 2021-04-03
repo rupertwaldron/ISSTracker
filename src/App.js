@@ -92,7 +92,8 @@ const MapContainer = () => {
             desc: "Preview",
             temp: "1"
         },
-        infoSelected: true
+        infoSelected: true,
+        visibility: ""
     })
 
     const mapStyles = {
@@ -119,7 +120,8 @@ const MapContainer = () => {
                             location: {
                                 lat: data.latitude,
                                 lng: data.longitude
-                            }
+                            },
+                            visibility: data.visibility
                         })
                         setLoading(false);
                     } else {
@@ -299,7 +301,7 @@ const MapContainer = () => {
                                 infoSelected: false
                             })}
                         >
-                            <p>{issObj.name}</p>
+                            <p>{issObj.name} lat: {issObj.location.lat} lng: {issObj.location.lng} visibility: {issObj.visibility}</p>
                         </InfoWindow>
                     )
                 }
