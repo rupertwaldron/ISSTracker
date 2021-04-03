@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
+import {GoogleMap, InfoWindow, LoadScript, Marker} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
@@ -10,18 +10,18 @@ const MapContainer = () => {
     const LOCATION_BASE_URL = 'http://api.positionstack.com/v1/reverse';
     const GOOGLE_MAP_API = 'AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk';
 
-    const locations = [
-        {
-            name: "ISS",
-            location: {
-                lat: 10.3954,
-                lng: 2.162
-            },
-            weather: {
-                desc: "Preview",
-                temp: "1"
-            }
-        }
+    // const locations = [
+    //     {
+    //         name: "ISS",
+    //         location: {
+    //             lat: 10.3954,
+    //             lng: 2.162
+    //         },
+    //         weather: {
+    //             desc: "Preview",
+    //             temp: "1"
+    //         }
+    //     }
         // {
         //     name: "Location 2",
         //     location: {
@@ -66,7 +66,7 @@ const MapContainer = () => {
         //         temp: "5"
         //     }
         // }
-    ];
+    // ];
 
     const [ selectedIndex, setSelectedIndex ] = useState(0);
 
@@ -80,9 +80,20 @@ const MapContainer = () => {
 
     const [ homePosition, setHomePosition ] = useState({lat: 0.0, lng: 0.0});
 
-    const [ markers, setMarkers ] = useState([...locations]);
+    const [ markers, setMarkers ] = useState([]);
 
-    const [ issLocation, setIssLocation ] = useState({lat: 0.0, lng: 0.0})
+    const [ issObj, setIssObj ] = useState({
+        name: "ISS",
+        location: {
+            lat: 10.3954,
+            lng: 2.162
+        },
+        weather: {
+            desc: "Preview",
+            temp: "1"
+        },
+        infoSelected: true
+    })
 
     const mapStyles = {
         height: "100vh",
@@ -95,7 +106,7 @@ const MapContainer = () => {
     const updateIssLocation = () => {
         const ISS_URL = 'https://api.wheretheiss.at/v1/satellites/25544';
         setLoading(true);
-        setIssLocation(() => {
+        setIssObj(() => {
             fetch(ISS_URL)
                 .then(res => {
                     setHttpStatus(res.status);
@@ -103,10 +114,12 @@ const MapContainer = () => {
                 })
                 .then(data => {
                     if (httpStatus === 200) {
-                        setIssLocation({
-                            ...issLocation,
-                            lat: data.latitude,
-                            lng: data.longitude
+                        setIssObj({
+                            ...issObj,
+                            location: {
+                                lat: data.latitude,
+                                lng: data.longitude
+                            }
                         })
                         setLoading(false);
                     } else {
@@ -118,7 +131,7 @@ const MapContainer = () => {
                     console.log(err);
                 });
         })
-        console.log(issLocation);
+        console.log(issObj);
     }
 
     useEffect(() => {
@@ -265,11 +278,30 @@ const MapContainer = () => {
                 {
                     !loading && (
                         <Marker
-                            position={issLocation}
+                            position={issObj.location}
                             icon={iss}
+                            onClick={() => setIssObj({
+                                ...issObj,
+                                infoSelected: true
+                            })}
                         />
                     )
 
+                }
+                {
+                    !loading && issObj.infoSelected &&
+                    (
+                        <InfoWindow
+                            position={{lat: issObj.location.lat + 2, lng: issObj.location.lng + 2}}
+                            clickable={true}
+                            onCloseClick={() => setIssObj({
+                                ...issObj,
+                                infoSelected: false
+                            })}
+                        >
+                            <p>{issObj.name}</p>
+                        </InfoWindow>
+                    )
                 }
                 {/*{*/}
                 {/*    !loading && (*/}
