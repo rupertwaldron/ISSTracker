@@ -3,7 +3,7 @@ import {GoogleMap, LoadScript, Marker} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
-import orange_dot from './assets/images/markers/orange-dot.png';
+import iss from './assets/images/markers/iss.png';
 
 const MapContainer = () => {
     const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
@@ -103,16 +103,16 @@ const MapContainer = () => {
                 })
                 .then(data => {
                     if (httpStatus === 200) {
-                        // setIssLocation({
-                        //     ...issLocation,
-                        //     lat: data.latitude,
-                        //     lng: data.longitude
-                        // })
-                        const newlocation = {
+                        setIssLocation({
+                            ...issLocation,
                             lat: data.latitude,
                             lng: data.longitude
-                        }
-                        setIssLocation(newlocation);
+                        })
+                        // const newlocation = {
+                        //     lat: data.latitude,
+                        //     lng: data.longitude
+                        // }
+                        // setIssLocation(newlocation);
                         setLoading(false);
                     } else {
                         throw httpStatus;
@@ -270,7 +270,7 @@ const MapContainer = () => {
                     !loading && (
                         <Marker
                             position={issLocation}
-                            icon={orange_dot}
+                            icon={iss}
                         />
                     )
 
