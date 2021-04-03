@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {GoogleMap, InfoWindow, LoadScript, Marker} from '@react-google-maps/api';
+import {GoogleMap, InfoWindow, LoadScript, Marker, Polyline} from '@react-google-maps/api';
 import Card from './elements/Card/Card';
 import Markers from './components/Markers/Markers';
 import MarkerInfo from './components/MarkerInfo/MarkerInfo';
@@ -94,7 +94,9 @@ const MapContainer = () => {
         },
         infoSelected: true,
         visibility: ""
-    })
+    });
+
+    const [journey, setJourney] = useState([]);
 
     const mapStyles = {
         height: "100vh",
@@ -129,16 +131,22 @@ const MapContainer = () => {
                     }
                 })
                 .catch(err => {
-                    setLoading(false);
                     console.log(err);
+                    setLoading(false);
                 });
         })
-        console.log(issObj);
+        console.log(journey);
     }
 
     useEffect(() => {
         const interval = setInterval(() => {
             updateIssLocation();
+            setJourney(
+                journey1 => [...journey1, {
+                    lat: issObj.location.lat,
+                    lng: issObj.location.lng
+                }])
+            console.log("Timer called")
         }, 10000);
         return () => clearInterval(interval);
     })
@@ -176,7 +184,7 @@ const MapContainer = () => {
                     setLoading(false);
                 });
         });
-        console.log(item.name)
+        // console.log(item.name)
     }
 
     const success = position => {
@@ -230,7 +238,7 @@ const MapContainer = () => {
                     setLoading(false);
                 });
         })
-        console.log(markers);
+        // console.log(markers);
     }
 
     useEffect(() => {
@@ -247,7 +255,6 @@ const MapContainer = () => {
         const newMarkers = markers.slice();
         newMarkers[index] = markerToUpdate;
         setMarkers(newMarkers);
-        console.log(markers);
     }
 
     return (
@@ -263,7 +270,7 @@ const MapContainer = () => {
                     homePosition.lat && !loading && (
                         <Marker
                             position={homePosition}
-                            onClick={updateIssLocation}
+                            // onClick={updateIssLocation}
                         />
                     )
                 })
@@ -305,14 +312,19 @@ const MapContainer = () => {
                         </InfoWindow>
                     )
                 }
-                {/*{*/}
-                {/*    !loading && (*/}
-                {/*        <InfoDisplay*/}
-                {/*            selected={selected}*/}
-                {/*            onCloseClick={setSelected}*/}
-                {/*        />*/}
-                {/*    )*/}
-                {/*}*/}
+                <Polyline
+                    path={journey.slice(1) }
+                    options={{
+                        strokeColor: 'red',
+                        strokeOpacity: 0.5,
+                        strokeWeight: 1,
+                        icons: [{
+                            icon: iss,
+                            offset: '0',
+                            repeat: '10px'
+                        }],
+                    }}
+                />
             </GoogleMap>
             {
                 !loading && markers.map((item, index) => {
