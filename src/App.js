@@ -10,63 +10,63 @@ const MapContainer = () => {
     const LOCATION_BASE_URL = 'http://api.positionstack.com/v1/reverse';
     const GOOGLE_MAP_API = 'AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk';
 
-    // const locations = [
-    //     {
-    //         name: "Location 1",
-    //         location: {
-    //             lat: 10.3954,
-    //             lng: 2.162
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "1"
-    //         }
-    //     },
-    //     {
-    //         name: "Location 2",
-    //         location: {
-    //             lat: 20.3917,
-    //             lng: 2.1649
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "2"
-    //         }
-    //     },
-    //     {
-    //         name: "Location 3",
-    //         location: {
-    //             lat: 30.3773,
-    //             lng: 2.1585
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "3"
-    //         }
-    //     },
-    //     {
-    //         name: "Location 4",
-    //         location: {
-    //             lat: 41.3797,
-    //             lng: 2.1682
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "4"
-    //         }
-    //     },
-    //     {
-    //         name: "Location 5",
-    //         location: {
-    //             lat: 50.4055,
-    //             lng: 2.1915
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "5"
-    //         }
-    //     }
-    // ];
+    const locations = [
+        {
+            name: "ISS",
+            location: {
+                lat: 10.3954,
+                lng: 2.162
+            },
+            weather: {
+                desc: "Preview",
+                temp: "1"
+            }
+        }
+        // {
+        //     name: "Location 2",
+        //     location: {
+        //         lat: 20.3917,
+        //         lng: 2.1649
+        //     },
+        //     weather: {
+        //         desc: "Preview",
+        //         temp: "2"
+        //     }
+        // },
+        // {
+        //     name: "Location 3",
+        //     location: {
+        //         lat: 30.3773,
+        //         lng: 2.1585
+        //     },
+        //     weather: {
+        //         desc: "Preview",
+        //         temp: "3"
+        //     }
+        // },
+        // {
+        //     name: "Location 4",
+        //     location: {
+        //         lat: 41.3797,
+        //         lng: 2.1682
+        //     },
+        //     weather: {
+        //         desc: "Preview",
+        //         temp: "4"
+        //     }
+        // },
+        // {
+        //     name: "Location 5",
+        //     location: {
+        //         lat: 50.4055,
+        //         lng: 2.1915
+        //     },
+        //     weather: {
+        //         desc: "Preview",
+        //         temp: "5"
+        //     }
+        // }
+    ];
 
     const [ selectedIndex, setSelectedIndex ] = useState(0);
 
@@ -80,7 +80,7 @@ const MapContainer = () => {
 
     const [ homePosition, setHomePosition ] = useState({lat: 0.0, lng: 0.0});
 
-    const [ markers, setMarkers ] = useState([]);
+    const [ markers, setMarkers ] = useState([...locations]);
 
     const [ issLocation, setIssLocation ] = useState({lat: 0.0, lng: 0.0})
 
@@ -108,11 +108,6 @@ const MapContainer = () => {
                             lat: data.latitude,
                             lng: data.longitude
                         })
-                        // const newlocation = {
-                        //     lat: data.latitude,
-                        //     lng: data.longitude
-                        // }
-                        // setIssLocation(newlocation);
                         setLoading(false);
                     } else {
                         throw httpStatus;
@@ -234,9 +229,10 @@ const MapContainer = () => {
     }
 
     const updateMarker = (markerToUpdate, index) => {
-        const markerArray = [...markers];
-        markerArray.splice(index, 1, markerToUpdate);
-        setMarkers([...markerArray]);
+        const newMarkers = markers.slice();
+        newMarkers[index] = markerToUpdate;
+        setMarkers(newMarkers);
+        console.log(markers);
     }
 
     return (
