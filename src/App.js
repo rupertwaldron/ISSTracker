@@ -6,67 +6,9 @@ import MarkerInfo from './components/MarkerInfo/MarkerInfo';
 import iss from './assets/images/markers/iss.png';
 
 const MapContainer = () => {
-    const API_KEY_LOCATION = 'd1b3defe6f361952579dfa1f3a7d9aa5';
+    const API_KEY_LOCATION = process.env.REACT_APP_LOCATION_API_KEY;
     const LOCATION_BASE_URL = 'http://api.positionstack.com/v1/reverse';
-    const GOOGLE_MAP_API = 'AIzaSyBFx6XeW-AJcXeNBOYYi-NJerP2hv5tisk';
-
-    // const locations = [
-    //     {
-    //         name: "ISS",
-    //         location: {
-    //             lat: 10.3954,
-    //             lng: 2.162
-    //         },
-    //         weather: {
-    //             desc: "Preview",
-    //             temp: "1"
-    //         }
-    //     }
-        // {
-        //     name: "Location 2",
-        //     location: {
-        //         lat: 20.3917,
-        //         lng: 2.1649
-        //     },
-        //     weather: {
-        //         desc: "Preview",
-        //         temp: "2"
-        //     }
-        // },
-        // {
-        //     name: "Location 3",
-        //     location: {
-        //         lat: 30.3773,
-        //         lng: 2.1585
-        //     },
-        //     weather: {
-        //         desc: "Preview",
-        //         temp: "3"
-        //     }
-        // },
-        // {
-        //     name: "Location 4",
-        //     location: {
-        //         lat: 41.3797,
-        //         lng: 2.1682
-        //     },
-        //     weather: {
-        //         desc: "Preview",
-        //         temp: "4"
-        //     }
-        // },
-        // {
-        //     name: "Location 5",
-        //     location: {
-        //         lat: 50.4055,
-        //         lng: 2.1915
-        //     },
-        //     weather: {
-        //         desc: "Preview",
-        //         temp: "5"
-        //     }
-        // }
-    // ];
+    const GOOGLE_MAP_API = process.env.REACT_APP_GOOGLE_MAP_API_KEY;
 
     const [ selectedIndex, setSelectedIndex ] = useState(0);
 
@@ -152,7 +94,7 @@ const MapContainer = () => {
     })
 
     const onSelect = (item, index) => {
-        const API_KEY = 'b3c1945cea140e1598a3fc529c90b7f1';
+        const API_KEY = process.env.REACT_APP_WEATHER_API_KEY;
         const API_URL = 'https://api.openweathermap.org/data/2.5/weather';
         const url = API_URL + `?lat=${item.location.lat}&lon=${item.location.lng}&appid=${API_KEY}&units=metric`;
         setLoading(true);
